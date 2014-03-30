@@ -35,20 +35,17 @@ int main()
 	words.push(s);
     }
 
-    // Initialize binary search tree with first word in phrase.
-    BSTNode<std::string>* root = new BSTNode<std::string>(words.front());
-    words.pop();
-
-    // Insert the rest of the phrase into the tree.
+    // Create the binary search tree.
+    BinarySearchTree<std::string>* tree = new BinarySearchTree<std::string>;
     while (!words.empty())
     {
-	root->insert_node(root, words.front());
+	tree->insert_node(words.front());
 	words.pop();
     }
     
     std::cout << std::endl << "LVR traverse" <<  std::endl;
     std::cout << "============" << std::endl;
-    root->inorder_traverse(root);
+    tree->inorder_traverse(tree->get_root());
 
     return 0;
 }

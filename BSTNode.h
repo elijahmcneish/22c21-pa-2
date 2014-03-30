@@ -21,6 +21,9 @@
 #include <iostream>
 
 template<class Item>
+class BinarySearchTree;
+
+template<class Item>
 class BSTNode
 {
 public:
@@ -30,8 +33,7 @@ public:
     	    left_child = left;
     	    right_child = right;
     	}
-    void insert_node(BSTNode<Item>*, Item key);
-    void inorder_traverse(BSTNode<Item>*) const;
+    friend class BinarySearchTree<Item>;
 private:
     Item key_field;
     BSTNode<Item>* left_child;
@@ -39,9 +41,30 @@ private:
 };
 
 template<class Item>
-void BSTNode<Item>::insert_node(BSTNode<Item>* root, Item key)
+class BinarySearchTree
 {
-    BSTNode *cursor = root, *prev = 0;
+public:
+    BinarySearchTree()
+	{
+	    root = NULL;
+	}
+    BSTNode<Item>* get_root();
+    void insert_node(Item key);
+    void inorder_traverse(BSTNode<Item>*) const;
+private:
+    BSTNode<Item>* root;
+};
+
+template<class Item>
+BSTNode<Item>* BinarySearchTree<Item>::get_root()
+{
+    return root;
+}
+
+template<class Item>
+void BinarySearchTree<Item>::insert_node(Item key)
+{
+    BSTNode<Item> *cursor = root, *prev = 0;
 
     while (cursor != NULL)
     {
@@ -52,16 +75,17 @@ void BSTNode<Item>::insert_node(BSTNode<Item>* root, Item key)
     	{ cursor = cursor->right_child; }
     }
 
-    if (key < prev->key_field)
-    { prev->left_child = new BSTNode(key); }
+    if (root == NULL)
+    { root = new BSTNode<Item>(key); }
+    else if (key < prev->key_field)
+    { prev->left_child = new BSTNode<Item>(key); }
     else if (key > prev->key_field)
-    { prev->right_child = new BSTNode(key); }
-    // Duplicate keys will be ignored
-    
+    { prev->right_child = new BSTNode<Item>(key); }
+    // Duplicate keys will be ignored.
 }
 
 template<class Item>
-void BSTNode<Item>::inorder_traverse(BSTNode<Item>* node) const
+void BinarySearchTree<Item>::inorder_traverse(BSTNode<Item>* node) const
 {
     if (node != NULL)
     {
