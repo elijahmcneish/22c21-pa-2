@@ -33,6 +33,7 @@ public:
     	    left_child = left;
     	    right_child = right;
     	}
+    void dump() const;
     friend class BinarySearchTree<Item>;
 private:
     Item key_field;
@@ -45,14 +46,14 @@ class BinarySearchTree
 {
 public:
     BinarySearchTree()
-	{
-	    root = NULL;
-	}
+	{ root = NULL; }
     BSTNode<Item>* get_root();
-    void insert_node(Item key);
+    void print_root();
+    void insert(Item key);
     void inorder_traverse(BSTNode<Item>*) const;
 private:
     BSTNode<Item>* root;
+    void insert(Item key, BSTNode<Item>*& sub);
 };
 
 template<class Item>
@@ -62,26 +63,30 @@ BSTNode<Item>* BinarySearchTree<Item>::get_root()
 }
 
 template<class Item>
-void BinarySearchTree<Item>::insert_node(Item key)
+void BinarySearchTree<Item>::print_root()
+// Debug method.
 {
-    BSTNode<Item> *cursor = root, *prev = 0;
+    std::cout << std::endl << "Root: " << root->key_field << " Address: " << root << std::endl;
+}
 
-    while (cursor != NULL)
-    {
-    	prev = cursor;
-    	if (key < cursor->key_field)
-    	{ cursor = cursor->left_child; }
-    	else
-    	{ cursor = cursor->right_child; }
-    }
-
-    if (root == NULL)
-    { root = new BSTNode<Item>(key); }
-    else if (key < prev->key_field)
-    { prev->left_child = new BSTNode<Item>(key); }
-    else if (key > prev->key_field)
-    { prev->right_child = new BSTNode<Item>(key); }
+template<class Item>
+void BinarySearchTree<Item>::insert(Item key, BSTNode<Item>*& sub)
+// Private method. The root node is not specified in the public interface.
+{
+    if (!sub)
+    { sub = new BSTNode<Item>(key); }
+    else if (key < sub->key_field)
+    { insert(key, sub->left_child); }
+    else if (key > sub->key_field)
+    { insert(key, sub->right_child); }
     // Duplicate keys will be ignored.
+}
+
+template<class Item>
+void BinarySearchTree<Item>::insert(Item key)
+// Pass the BST's root node to the private insert counterpart.
+{
+     insert(key, root);
 }
 
 template<class Item>
@@ -90,9 +95,22 @@ void BinarySearchTree<Item>::inorder_traverse(BSTNode<Item>* node) const
     if (node != NULL)
     {
 	inorder_traverse(node->left_child);
-	std::cout << "Key: " << node->key_field << std::endl;
+	std::cout << "\tKey: " << node->key_field << std::endl;
 	inorder_traverse(node->right_child);
     }
+}
+
+template<class Item>
+void BSTNode<Item>::dump() const
+// Debug method.
+{
+    std::cout << "|"  << "Key: " << key_field << " Address: " << this << std::endl;
+    if (left_child)
+    { std::cout << "|" << "Left child: " << left_child->key_field << " Address: " << left_child << std::endl; }
+    if (right_child)
+    { std::cout  << "|" << "Right child: " << right_child->key_field << " Address: " << right_child << std::endl; }
+
+    std::cout << std::endl;
 }
 
 #endif

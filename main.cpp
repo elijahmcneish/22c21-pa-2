@@ -24,28 +24,32 @@
 int main()
 {
     // Parse input phrase.
-    std::string PHRASE = "data structure is one of the most important courses in computer science";
+    const std::string PHRASE = "data structure is one of the most important courses in computer science";
     std::queue<std::string> words;
-    char delim = ' ';
+    const char DELIM = ' ';
     std::stringstream ss(PHRASE);
     while (!ss.eof())
     {
 	std::string s;
-	std::getline(ss, s, delim);
+	std::getline(ss, s, DELIM);
 	words.push(s);
     }
 
     // Create the binary search tree.
+    std::cout << std::endl << "Phrase: " << PHRASE << std::endl;
     BinarySearchTree<std::string>* tree = new BinarySearchTree<std::string>;
+    std::cout << std::endl << "Inserting nodes into BST..." ;
     while (!words.empty())
     {
-	tree->insert_node(words.front());
-	words.pop();
+	tree->insert(words.front());
+        words.pop();
     }
-    
-    std::cout << std::endl << "LVR traverse" <<  std::endl;
-    std::cout << "============" << std::endl;
+    std::cout << "Done." << std::endl;
+	
+    // Traverse the BST.
+    std::cout << std::endl << "LVR Traversal" <<  std::endl;
     tree->inorder_traverse(tree->get_root());
-
+    std::cout << std::endl;
+    
     return 0;
 }
