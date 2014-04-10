@@ -20,6 +20,9 @@
 #include <sstream>
 #include <string>
 #include "BSTNode.h"
+#include "BinarySearchTree.h"
+#include "BSTNode.cpp"
+#include "BinarySearchTree.cpp"
 
 int main()
 {

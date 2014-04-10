@@ -19,6 +19,7 @@
 #define BSTNODE_H_
 
 #include <iostream>
+#include "BinarySearchTree.h"
 
 template<class Item>
 class BinarySearchTree;
@@ -40,77 +41,5 @@ private:
     BSTNode<Item>* left_child;
     BSTNode<Item>* right_child;
 };
-
-template<class Item>
-class BinarySearchTree
-{
-public:
-    BinarySearchTree()
-	{ root = NULL; }
-    BSTNode<Item>* get_root();
-    void print_root();
-    void insert(Item key);
-    void inorder_traverse(BSTNode<Item>*) const;
-private:
-    BSTNode<Item>* root;
-    void insert(Item key, BSTNode<Item>*& sub);
-};
-
-template<class Item>
-BSTNode<Item>* BinarySearchTree<Item>::get_root()
-{
-    return root;
-}
-
-template<class Item>
-void BinarySearchTree<Item>::print_root()
-// Debug method.
-{
-    std::cout << std::endl << "Root: " << root->key_field << " Address: " << root << std::endl;
-}
-
-template<class Item>
-void BinarySearchTree<Item>::insert(Item key, BSTNode<Item>*& sub)
-// Private method. The root node is not specified in the public interface.
-{
-    if (!sub)
-    { sub = new BSTNode<Item>(key); }
-    else if (key < sub->key_field)
-    { insert(key, sub->left_child); }
-    else if (key > sub->key_field)
-    { insert(key, sub->right_child); }
-    // Duplicate keys will be ignored.
-}
-
-template<class Item>
-void BinarySearchTree<Item>::insert(Item key)
-// Pass the BST's root node to the private insert counterpart.
-{
-     insert(key, root);
-}
-
-template<class Item>
-void BinarySearchTree<Item>::inorder_traverse(BSTNode<Item>* node) const
-{
-    if (node != NULL)
-    {
-	inorder_traverse(node->left_child);
-	std::cout << "\tKey: " << node->key_field << std::endl;
-	inorder_traverse(node->right_child);
-    }
-}
-
-template<class Item>
-void BSTNode<Item>::dump() const
-// Debug method.
-{
-    std::cout << "|"  << "Key: " << key_field << " Address: " << this << std::endl;
-    if (left_child)
-    { std::cout << "|" << "Left child: " << left_child->key_field << " Address: " << left_child << std::endl; }
-    if (right_child)
-    { std::cout  << "|" << "Right child: " << right_child->key_field << " Address: " << right_child << std::endl; }
-
-    std::cout << std::endl;
-}
 
 #endif
